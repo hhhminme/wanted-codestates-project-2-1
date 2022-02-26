@@ -1,44 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
+
+import * as S from "./style";
 import ReactPaginate from "react-paginate";
-import IssueCard from "../components/IssueCard";
-import styled from "styled-components";
-
-const Container = styled.div`
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  margin-top: 100px;
-  padding: 0 50px;
-  padding-bottom: 200px;
-`;
-
-const CardContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 50px;
-`;
-
-const HomeButton = styled(Link)`
-  background: #2da44e;
-  padding: 10px;
-  font-size: 20px;
-  color: white;
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  border-radius: 10px;
-`;
-
-const PageTitle = styled.div`
-  font-weight: bold;
-  font-size: 50px;
-  margin-bottom: 50px;
-`;
+import IssueCard from "../../components/IssueCard";
 
 function Issues() {
   const { repoInfo } = useParams();
@@ -71,15 +37,15 @@ function Issues() {
 
   return (
     <>
-      <HomeButton to="/">HOME</HomeButton>
-      <Container>
-        <PageTitle>{repoInfo && `${owner}/${repo}`} ISSUES</PageTitle>
-        <CardContainer>
+      <S.HomeButton to="/">HOME</S.HomeButton>
+      <S.Container>
+        <S.PageTitle>{repoInfo && `${owner}/${repo}`} ISSUES</S.PageTitle>
+        <S.CardContainer>
           {issues &&
             issues.map((issue, idx) => (
               <IssueCard key={idx + 1} issue={issue} repoInfo={repoInfo} />
             ))}
-        </CardContainer>
+        </S.CardContainer>
 
         {issues && (
           <ReactPaginate
@@ -101,7 +67,7 @@ function Issues() {
             activeClassName={"active"}
           />
         )}
-      </Container>
+      </S.Container>
     </>
   );
 }
