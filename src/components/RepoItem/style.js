@@ -16,7 +16,10 @@ export const RepoSearchItem = styled.div`
 export const RepoSearchItemList = styled.li`
   list-style: none;
   display: flex;
-  align-items: center;
+  width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-weight: bold;
 `;
 
@@ -36,11 +39,16 @@ export const RepoSearchItemName = styled.p`
 
 export const RepoSearchLink = styled(Link)`
   display: block;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
   padding-top: 5px;
-  width: 90%;
+  margin-right: 5px;
+  width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:hover {
+    opacity: 0.5;
+  }
 `;
 
 export const RepoItemButton = styled.button`
@@ -53,4 +61,8 @@ export const RepoItemButton = styled.button`
   ${({ isSaved }) => {
     return isSaved ? "background:#eb2d4c" : "background:#4ceb7c";
   }};
+
+  &:hover {
+    opacity: 0.7;
+  }
 `;

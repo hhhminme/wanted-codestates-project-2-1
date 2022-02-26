@@ -35,3 +35,9 @@ export const PageTitle = styled.div`
   font-size: 50px;
   margin-bottom: 50px;
 `;
+
+export const Message = styled.div`
+  width: 100%;
+  font-size: 30px;
+  text-align: start;
+`;
