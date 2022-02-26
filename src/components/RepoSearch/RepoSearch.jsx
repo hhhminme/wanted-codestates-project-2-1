@@ -3,7 +3,9 @@ import axios from "axios";
 import Loader from "../Loading";
 
 import * as S from "./style";
-import GitLogo from "../../assets/gitIcon.png";
+import RepoSearchBar from "../RepoSearchBar";
+import RepoItem from "../RepoItem";
+import Modal from "../Modal";
 import { verifySaveRepo } from "../verifySaveRepo";
 
 function RepoSearch({ savedRepos, setSavedRepos }) {
@@ -34,7 +36,7 @@ function RepoSearch({ savedRepos, setSavedRepos }) {
   const enterKeyControl = event => {
     if (searchWordInputRef.current.value) {
       if (event.key === "Enter") {
-        getRepositoryData();
+        handleSearchClick();
       }
     }
   };
@@ -80,36 +82,14 @@ function RepoSearch({ savedRepos, setSavedRepos }) {
   return (
     <>
       {modalState && (
-        <>
-          <S.ModalWrap>
-            <S.ModalCard>
-              <S.ModalContentWrap>
-                <S.ModalContent>{modalContent}</S.ModalContent>
-              </S.ModalContentWrap>
-              <S.ModalCloseBtn
-                type="button"
-                onClick={() => setModalState(false)}
-              >
-                닫기
-              </S.ModalCloseBtn>
-            </S.ModalCard>
-          </S.ModalWrap>
-          <S.modalBackground></S.modalBackground>
-        </>
+        <Modal modalContent={modalContent} setModalState={setModalState} />
       )}
       <S.RepoSearchContainer>
-        <S.RepoSearchWrap>
-          <S.RepoSearchInput
-            type="text"
-            name="repositorySearch"
-            placeholder="search..."
-            onKeyDown={enterKeyControl}
-            ref={searchWordInputRef}
-          />
-          <S.RepoSearchButton onClick={handleSearchClick}>
-            검색
-          </S.RepoSearchButton>
-        </S.RepoSearchWrap>
+        <RepoSearchBar
+          searchWordInputRef={searchWordInputRef}
+          enterKeyControl={enterKeyControl}
+          handleSearchClick={handleSearchClick}
+        />
         <S.RepoSearchResult>
           {loadingState ? (
             <Loader />
@@ -122,19 +102,13 @@ function RepoSearch({ savedRepos, setSavedRepos }) {
                 </div>
               )}
               {repositoryList.slice(0, endView).map((value, index) => (
-                <S.RepoSearchItem
-                  className={`repositoryItem-${index}`}
+                <RepoItem
                   key={index}
-                >
-                  <S.RepoSearchItemList>
-                    <S.GitIcon src={GitLogo} />
-                    <p>{value.full_name}</p>
-                  </S.RepoSearchItemList>
-                  {/* TODO : 여기에 추가해주세요! */}
-                  <button onClick={() => handleSaveRepo(value.full_name)}>
-                    추가
-                  </button>
-                </S.RepoSearchItem>
+                  value={value.full_name}
+                  index={index}
+                  isSaved={false}
+                  handleRepo={handleSaveRepo}
+                />
               ))}
               {repositoryList.length > 10 && (
                 <S.MoreButton onClick={e => handleMoreView(e)}>

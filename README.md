@@ -2,7 +2,7 @@
 
 ✨[결과물 보러가기](https://wanted-codestates-project-2-1.vercel.app/)✨
 
-## 사용 스택![프리온보딩코스_1]
+## 사용 스택
 
 
 <p>
@@ -10,7 +10,6 @@
   <img src="https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white" />
 </p>
 
-<br />
 
 ## 요구사항
 
@@ -24,8 +23,6 @@
   - 해당 issue를 클릭하면 Github의 상세 페이지로 이동할 수 있다.
   - 페이지네이션을 통해서 계속해서 issue를 모아서 볼 수 있다.
 
-<br />
-
 ## 기능 설명
 
 ### Home page
@@ -36,15 +33,16 @@
 
 **Repository 검색 및 리스트 출력**
 
+![ezgif com-gif-maker (7)](https://user-images.githubusercontent.com/54930877/155452598-24be39b4-af66-40d7-9214-f96bc94a6438.gif)
+
 Repository 검색은 [Axios](https://axios-http.com/docs/intro)를 활용한 비동기 통신으로 구현을 하였습니다. 검색창에 검색하고자 하는 내용을 param으로 받아 해당 내용에 대해 구현을 하였습니다.
 Enter 키와 검색 버튼을 통하여 검색을 실행할 수 있도록 구현하였습니다. 이때 input 내에 글자를 입력할 경우 다른 컴포넌트가 렌더링되는 것을 방지하고자 [useRef](https://reactjs.org/docs/hooks-reference.html#useref)를 사용하여 해당 검색 창의 내용을 가져오도록 구현하였습니다.
 
 통신 후 응답받은 데이터를 출력하기 전에 [react-loader-spinner](https://mhnpd.github.io/react-loader-spinner/)를 활용한 로딩을 구현하였습니다. 출력된 목록은 전체 목록이 출력되어 페이지가 길어진다는 문제점이 있어 처음 10개만 보여지고 사용자가 더보기 버튼을 누르게 될 경우 이후의 30개가 보여지도록 구현하였습니다.
-<br>
 
 🔥**Repository LocalStorage 등록 및 삭제**
 <br/><br/> 
-<img src="https://user-images.githubusercontent.com/89959952/155331980-6817f9c6-4ea9-4c0c-8035-ea66335e3df4.gif" width="500px" height="300px" title="local" alt="local"></img>
+<img src="https://user-images.githubusercontent.com/89959952/155449060-11be1939-8e47-4745-a689-6399b9afdaa7.gif" width="500px" height="300px" title="local" alt="local"></img>
 <br/>
 - **구현한 방법과 이유**
 > 1. 검색된 Public Repository를 **등록**할 수 있다.
@@ -54,100 +52,70 @@ Enter 키와 검색 버튼을 통하여 검색을 실행할 수 있도록 구현
  
 <br/> 
 
-```javaScript
-const getIssue = () => {
-  if (JSON.parse(localStorage.getItem("repos"))) {
-    const repos = JSON.parse(localStorage.getItem("repos"));
-    return repos;
-  }
-  return;
-};
+![ezgif com-gif-maker (6)](https://user-images.githubusercontent.com/54930877/155452605-db89f1d1-7e3f-4b1c-b731-9212da1356bf.gif)
 
-const setIssue = el => {
-  //중복제거
-  if (JSON.parse(localStorage.getItem("repos"))) {
-    if (JSON.parse(localStorage.getItem("repos")).includes(el)) {
-      return window.alert("이미 등록 되어 있습니다🔥");
-    }
-  }
-  // 꺼내올때: 객체로 만들기(JSON.parse)고 저장할때 : 문자열로 만들기(JSON.stringify)
-  else if (JSON.parse(localStorage.getItem("repos")).length >= 4) {
-    return window.alert("등록 개수는 최대 4개를 넘을수 없습니다🔥");
-  }
-  //맨처음 객체를 넣고 저장할땐 문자열이 아닌 객체기 때문에 JSON.parse를 적용
-  const repos = JSON.parse(localStorage.getItem("repos")) || [];
-  repos.push(el);
-  //[object Object] 라는 스트링만 나옴 그래서 string으로 변환해준 다음에 넣어줘야함
-  localStorage.setItem("repos", JSON.stringify(repos));
-};
+사용자 경험을 고려하여 기존 알럿창으로 뜨는 경고창을 모달창으로 변경하여 구현을 하였습니다. 
 
-const delIssue = el => {
-  const repos = JSON.parse(localStorage.getItem("repos"));
-  const newRepos = repos.filter(item => {
-    return item !== el;
-  });
-  localStorage.setItem("repos", JSON.stringify(newRepos));
-};
-
-export { getIssue, setIssue, delIssue };
-```
+🔥**Repository LocalStorage 등록 및 삭제([신항민](https://github.com/ssinking91), [강동진](https://github.com/jinn2u))**
+<br/><br/> 
+<img src="https://user-images.githubusercontent.com/89959952/155350582-76cedb0d-67bb-4770-ab23-024e9ca44dd5.gif" width="500px" height="300px" title="local" alt="local"></img>
 <br/>
 
-> - **JSON.stringifty** : JavaScript 객체를 JSON 텍스트로 바꾸고 해당 JSON 텍스트를 문자열에 저장
-> - **JSON.parse** : JSON 텍스트 문자열을 JavaScript 객체로 변환
- 
-<br/>
+- 브랜치 전략
+    - Feature-RepoAddAndDelete를 Feature 브랜치로 설정
+    - Feature-TitleComponent와 Feature-useLocalStorage 두 개의 브랜치를 기능별로 분리
+    - rebase merge로 Feature 브랜치에 병합
+    -이유
+      - rebase merge를 하게 된다면 feature branch에서 보았을 때 일반 merge보다 더 히스토리를 보기 용이하다고 생각했습니다.
+      - 또한 단순한 기능을 분리한 브랜치이기 때문에 커밋 내용이 많지 않다고 생각했습니다. 따라서 squash merge를 사용하지 않았습니다.
 
-- **구현하면서 어려웠던점과 해결**
+- 코드 작성시 생각한 점
+  - 하나의 함수는 하나의 기능만을 가져간다.
+  - 재사용성을 고려한다.
+  - early return을 통해 가독성을 고려한다.
 
-> - 처음 기능 구현 시 직관적인 로직을 짜고 싶어 리액트의 useState()를 사용할 생각을 못했다. 하지만 페어리뷰를 통해 useState()를 사용하여 짜는 로직을 구현해 리액트의 상태관리를 통한 LocalStorage를 쓰는 법을 알게되었다. 
+- useLocalStorage 구현한 방법과 이유 [pr1](https://github.com/hhhminme/wanted-codestates-project-2-1/pull/9),[pr2](https://github.com/hhhminme/wanted-codestates-project-2-1/pull/10)
+    - 구현하기 앞서 어떠한 것을 만들어야 하는지 정의하였습니다.
+      1. Public Repository를 등록하기 위해서는 localStorage를 사용한다.
+      2. 다른 기능에서도 localStorage를 사용할 수 있으므로 추상화한다.
+      3. localStorage는 App에서 사용할 떄 state에 보관한다.
+      4. 따라서 useLocalStorage훅을 만들어 localStorage에서 아이템을 가져오고 state에 저장하는 중복작업을 최소화한다.
+- titleComponent 구현 방법과 이유 (이 기능은 1팀에서 만든 컴포넌트와 중복 되었기 때문에 논의 후 develop에는 반영하지 않았습니다.)[pr](https://github.com/hhhminme/wanted-codestates-project-2-1/pull/11)
+    1. localStorage에 추가하는 부분과 삭제하는 부분은 버튼의 내용만 다르다. 따라서 재사용 가능하게 구현한다.
+    2. api에서 데이터가 pagenation되지 않고 한번에 가져오기 때문에 useInterSectionObserver 훅을 만든다.
+    3. threshold와 lazy속성을 통해 어느 시점에서 렌더링 할 것인지 정할 수 있다.
 
-```javaScript    
-export const useLocalStorage = (key, initialValue) => {
-  const getLocalStorage = key => {
-    try {
-      const items = localStorage.getItem(key);
-      const validItems = items ? JSON.parse(items) : initialValue;
-      return validItems;
-    } catch (e) {
-      console.error(e);
-      return initialValue;
-    }
-  };
-
-  const [storageItems, setStorageItems] = useState(() => getLocalStorage(key));
-
-  const setLocalStorage = value => {
-    try {
-      if (!value) return;
-      localStorage.setItem(key, JSON.stringify(value));
-      setStorageItems(value);
-    } catch (e) {
-      console.error(e);
-      localStorage.setItem(key, JSON.stringify(initialValue));
-      setStorageItems(initialValue);
-    }
-  };
-
-  return [storageItems, setLocalStorage];
-};
-```
-
-
+- [최종 feature 브랜치](https://github.com/hhhminme/wanted-codestates-project-2-1/tree/Feature-RepoAddAndDelete)
+  
  
 
-### Issue page - 담당자 이름
+### Issue page
+
+- 요구사항 4번에 대한 기능을 하고 있습니다. ([전호용](https://github.com/lmooroom), [이장민](https://github.com/leo-xee), [오카무라카에](https://github.com/kaehehehe))
+- 각 issue마다 제목, Repository명을 포함한 추가적인 데이터 출력
+- 페이지네이션을 통해 issue 모아보기 
+- 해당 issue 클릭 시에 Github의 상세 페이지로 이동
+
+#### 🔥 각 issue마다 제목, Repository명을 포함한 추가적인 데이터 출력과 페이지네이션을 통한 issue 모아보기
+
+![payHere_demo1](https://user-images.githubusercontent.com/21965795/155453090-bd07558c-8d5d-49df-8966-22be85caf863.gif)
+
+
+#### 🔥 해당 issue 클릭 시에 Github의 상세 페이지로 이동
+
+![payHere_demo2](https://user-images.githubusercontent.com/21965795/155453111-3ce602c8-37ca-4d55-8c2f-50ef4c1bd806.gif)
+
 
 <br />
 
 ## 팀원 소개
 
-| 이름         | 깃허브                                        |
-| ------------ | --------------------------------------------- |
-| 강동진       | [jinn2u](https://github.com/jinn2u)           |
-| 박상우       | [SangWoo9734](https://github.com/SangWoo9734) |
-| 신항민       | [ssinking91](https://github.com/ssinking91)   |
-| 이장민       | [leo-xee](https://github.com/leo-xee)         |
-| 오카무라카에 | [kaehehehe](https://github.com/kaehehehe)     |
-| 허민         | [hhhminme](https://github.com/hhhminme)       |
-| 전호용       | [mooroom](https://github.com/mooroom)         |
+| 이름         | 깃허브                                        | 역할 |
+| ------------ | --------------------------------------------- | --- |
+| 강동진       | [jinn2u](https://github.com/jinn2u)           | |
+| 박상우       | [SangWoo9734](https://github.com/SangWoo9734) | 요구사항 1 구현, 요구사항 1 랜더링 최적화 |
+| 신항민       | [ssinking91](https://github.com/ssinking91)   | |
+| 이장민       | [leo-xee](https://github.com/leo-xee)         | |
+| 오카무라카에 | [kaehehehe](https://github.com/kaehehehe)     | 요구사항 4 구현, 이슈 카드에 제목과 Repository명, 아바타, ~ago 형태의 작성날짜가 나오도록 구현| 
+| 허민         | [hhhminme](https://github.com/hhhminme)       | 1차 과제 팀 리더, 요구사항 1 구현 및 모달창 구현|
+| 전호용       | [mooroom](https://github.com/mooroom)         | |
