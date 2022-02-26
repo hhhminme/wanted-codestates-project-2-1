@@ -1,7 +1,7 @@
 import React from "react";
 import * as S from "./style";
 
-import { convertDataIntoAgo } from "../../util/convertDataIntoAgo";
+import { convertDataIntoAgo } from "../../utils/convertDataIntoAgo";
 
 function IssueCard({ issue, repoInfo }) {
   const { html_url, title, user, created_at } = issue;
