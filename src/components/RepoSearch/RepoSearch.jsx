@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Loader from "../Loading";
 
@@ -15,6 +15,10 @@ function RepoSearch({ savedRepos, setSavedRepos }) {
   const [modalState, setModalState] = useState(false);
   const [modalContent, setModalContent] = useState("");
   const searchWordInputRef = useRef("");
+
+  useEffect(() => {
+    searchWordInputRef.current.focus();
+  }, []);
 
   const getRepositoryData = async () => {
     try {

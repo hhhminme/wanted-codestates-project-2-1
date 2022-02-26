@@ -41,10 +41,13 @@ function Issues() {
       <S.Container>
         <S.PageTitle>{repoInfo && `${owner}/${repo}`} ISSUES</S.PageTitle>
         <S.CardContainer>
-          {issues &&
+          {issues ? (
             issues.map((issue, idx) => (
               <IssueCard key={idx + 1} issue={issue} repoInfo={repoInfo} />
-            ))}
+            ))
+          ) : (
+            <S.Message>There is no issues.</S.Message>
+          )}
         </S.CardContainer>
 
         {issues && (

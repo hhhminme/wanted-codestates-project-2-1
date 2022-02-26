@@ -11,7 +11,7 @@ function IssueCard({ issue, repoInfo }) {
       <S.Title>{title}</S.Title>
       <S.RepoName>{repoInfo}</S.RepoName>
       <S.Avatar src={user.avatar_url} />
-      <S.Date>{convertDataIntoAgo(created_at)}</S.Date>
+      <S.Date>{convertDataIntoAgo(created_at)} ago</S.Date>
     </S.Card>
   );
 }

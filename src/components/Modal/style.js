@@ -16,7 +16,8 @@ export const ModalCard = styled.div`
   display: flex;
   position: relative;
   flex-direction: column;
-  width: 25%;
+  width: 300px;
+  padding: 10px 0;
   border: 0;
   border-radius: 0.5rem;
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
@@ -27,6 +28,10 @@ export const ModalCloseBtn = styled.button`
   padding: 0.5rem 1.5rem;
   color: black;
   font-weight: bold;
+
+  &:hover {
+    opacity: 0.5;
+  }
 `;
 
 export const ModalContentWrap = styled.div`

@@ -1,4 +1,5 @@
 import React from "react";
+import { FaSearch } from "react-icons/fa";
 
 import * as S from "./style";
 
@@ -18,7 +19,7 @@ function RepoSearchBar({
           ref={searchWordInputRef}
         />
         <S.RepoSearchButton onClick={handleSearchClick}>
-          검색
+          <FaSearch size={26} />
         </S.RepoSearchButton>
       </S.RepoSearchWrap>
     </>

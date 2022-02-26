@@ -2,12 +2,7 @@ import styled from "styled-components";
 
 export const RepoSearchContainer = styled.div`
   flex: 2;
-
-  @media screen and (max-width: 716px) {
-    width: 100%;
-    height: fit-content;
-    border-bottom: 1px solid black;
-  }
+  height: 70vh;
 `;
 
 export const CountImpact = styled.span`
@@ -17,9 +12,10 @@ export const CountImpact = styled.span`
 `;
 
 export const RepoSearchResult = styled.div`
-  height: calc(100vh - 120px);
-  padding: 10px;
+  height: calc(100vh - 140px);
+  padding: 5px;
   overflow: auto;
+  height: 100%;
   ::-webkit-scrollbar {
     display: none;
   }
@@ -32,6 +28,8 @@ export const RepoSearchResult = styled.div`
 export const MoreButton = styled.button`
   width: 100%;
   height: 30px;
+  padding: 5px 0;
+  font-size: 16px;
   text-align: center;
   border: 1px solid black;
   border-radius: 5px;

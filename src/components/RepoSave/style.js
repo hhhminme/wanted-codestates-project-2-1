@@ -5,6 +5,9 @@ export const RepoSave = styled.div`
   flex-direction: column;
   flex-basis: 200px;
   flex: 1;
+  min-width: 400px;
+  height: 100%;
+  margin-top: 60px;
 
   ul {
     list-style: none;
