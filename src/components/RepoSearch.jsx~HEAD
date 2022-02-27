@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
-
-// image
+import { Link } from "react-router-dom";
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import { verifySaveRepo } from "./verifySaveRepo";
 import GitLogo from "../img/gitIcon.png";
-
-// components
 import Loader from "./Loading";
-
 const RepoSearchContainer = styled.div`
   max-width: 500px;
+  width: 100%;
   padding: 20px 30px;
 
   @media screen and (max-width: 716px) {
@@ -47,7 +46,7 @@ const RepoSearchResult = styled.div`
   }
 
   @media screen and (max-width: 716px) {
-    height: calc(100vh - 320px);
+    height: calc(100vh - 300px);
   }
 `;
 const GitIcon = styled.img`
@@ -65,14 +64,7 @@ const RepoSearchItem = styled.div`
   margin-bottom: 10px;
   padding: 5px 10px;
 `;
-const RepoSaveButton = styled.div`
-  width: 20px;
-  height: 20px;
-  border: 1px solid black;
-  border-radius: 50%;
-  text-align: center;
-  color: white;
-`;
+
 const MoreButton = styled.button`
   width: 100%;
   height: 30px;
@@ -86,7 +78,15 @@ const RepoSearchItemList = styled.li`
   align-items: center;
 `;
 
-function RepoSearch() {
+const RepoSearchItemName = styled.p`
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 90%;
+`;
+
+function RepoSearch({ savedRepos, setSavedRepos }) {
   // state
   const [userInput, setUserInput] = useState("");
   const [repositoryList, setRepositoryList] = useState([]);
@@ -103,7 +103,7 @@ function RepoSearch() {
     }
     setLoadingState(1);
     axios
-      .get("http://api.github.com/search/repositories", {
+      .get("https://api.github.com/search/repositories", {
         params: {
           q: userInput,
         },
@@ -117,12 +117,6 @@ function RepoSearch() {
       });
   };
 
-  const addStyleOnItem = index => {
-    document.querySelector(`.repositoryItem-${index}`).style.background =
-      "#c9ffd2";
-    document.querySelector(`.checkMark-${index}`).style.background = "#238636";
-  };
-
   const handleMoreView = e => {
     let showMoreValue = e.target.innerText;
     if (showMoreValue === "더보기") {
@@ -133,6 +127,16 @@ function RepoSearch() {
       setEndView(10);
     }
   };
+
+  const handleSaveRepo = repoName => {
+    const isValid = verifySaveRepo(savedRepos, repoName);
+    isValid && setSavedRepos([...savedRepos, repoName]);
+  };
+
+  useEffect(() => {
+    console.log("화면 뜸!");
+    console.log(savedRepos);
+  }, [savedRepos]);
 
   return (
     <>
@@ -164,22 +168,22 @@ function RepoSearch() {
                 <RepoSearchItem
                   className={`repositoryItem-${index}`}
                   key={index}
-                  onClick={() => addStyleOnItem(index)}
                 >
                   <RepoSearchItemList>
                     <GitIcon src={GitLogo} />
-                    <p>{value.full_name}</p>
+                    <RepoSearchItemName>{value.full_name}</RepoSearchItemName>
                   </RepoSearchItemList>
-                  <RepoSaveButton className={`checkMark-${index}`}>
-                    ✓
-                  </RepoSaveButton>
+                  {/* TODO : 여기에 추가해주세요! */}
+                  <button onClick={() => handleSaveRepo(value.full_name)}>
+                    추가
+                  </button>
                 </RepoSearchItem>
               ))}
+              {repositoryList.length > 10 ? (
+                <MoreButton onClick={e => handleMoreView(e)}>더보기</MoreButton>
+              ) : null}
             </>
           )}
-          {repositoryList.length > 10 ? (
-            <MoreButton onClick={e => handleMoreView(e)}>더보기</MoreButton>
-          ) : null}
         </RepoSearchResult>
       </RepoSearchContainer>
     </>
