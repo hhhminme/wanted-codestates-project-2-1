@@ -1,14 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import Loader from "../Loading";
 
 import * as S from "./style";
 import RepoSearchBar from "../RepoSearchBar";
-import RepoItem from "../RepoItem";
+import RepoSearchResult from "../RepoSearchResult";
 import Modal from "../Modal";
 import { verifySaveRepo } from "../verifySaveRepo";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
-function RepoSearch({ savedRepos, setSavedRepos }) {
+function RepoSearch() {
+  const [savedRepos, setSavedRepos] = useLocalStorage(
+    "repo",
+    localStorage.getItem("repo"),
+  );
   const [repositoryList, setRepositoryList] = useState([]);
   const [loadingState, setLoadingState] = useState(0);
   const [endView, setEndView] = useState(10);
@@ -21,6 +25,7 @@ function RepoSearch({ savedRepos, setSavedRepos }) {
   }, []);
 
   const getRepositoryData = async () => {
+    console.log(loadingState);
     try {
       const res = await axios.get(
         "https://api.github.com/search/repositories",
@@ -58,17 +63,6 @@ function RepoSearch({ savedRepos, setSavedRepos }) {
     getRepositoryData();
   };
 
-  const handleMoreView = e => {
-    let showMoreValue = e.target.innerText;
-    if (showMoreValue === "더보기") {
-      e.target.innerText = "접기";
-      setEndView(30);
-    } else {
-      e.target.innerText = "더보기";
-      setEndView(10);
-    }
-  };
-
   const handleSaveRepo = repoName => {
     const isValid = verifySaveRepo(savedRepos, repoName);
     if (isValid === "overflow") {
@@ -94,34 +88,11 @@ function RepoSearch({ savedRepos, setSavedRepos }) {
           enterKeyControl={enterKeyControl}
           handleSearchClick={handleSearchClick}
         />
-        <S.RepoSearchResult>
-          {loadingState ? (
-            <Loader />
-          ) : (
-            <>
-              {repositoryList === [] && (
-                <div>
-                  <S.CountImpact>{repositoryList.length}</S.CountImpact> 개의
-                  검색 결과
-                </div>
-              )}
-              {repositoryList.slice(0, endView).map((value, index) => (
-                <RepoItem
-                  key={index}
-                  value={value.full_name}
-                  index={index}
-                  isSaved={false}
-                  handleRepo={handleSaveRepo}
-                />
-              ))}
-              {repositoryList.length > 10 && (
-                <S.MoreButton onClick={e => handleMoreView(e)}>
-                  더보기
-                </S.MoreButton>
-              )}
-            </>
-          )}
-        </S.RepoSearchResult>
+        <RepoSearchResult
+          repositoryList={repositoryList}
+          handleSaveRepo={handleSaveRepo}
+          loadingState={loadingState}
+        />
       </S.RepoSearchContainer>
     </>
   );

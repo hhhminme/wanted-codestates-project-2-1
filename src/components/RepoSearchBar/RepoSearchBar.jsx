@@ -26,4 +26,4 @@ function RepoSearchBar({
   );
 }
 
-export default RepoSearchBar;
+export default React.memo(RepoSearchBar);

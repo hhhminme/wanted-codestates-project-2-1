@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import * as S from "./style";
 import RepoItem from "../RepoItem";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
-function RepoSave({ savedRepos, setSavedRepos }) {
+function RepoSave() {
+  const [savedRepos, setSavedRepos] = useLocalStorage(
+    "repo",
+    localStorage.getItem("repo"),
+  );
   const navigate = useNavigate();
+
   const handleDeleteRepo = name => {
     const newRepo = savedRepos.filter(item => item !== name);
     setSavedRepos(newRepo);
