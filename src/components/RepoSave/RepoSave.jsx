@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { SavedReposContext } from "../../pages/Home/Home";
 
 import * as S from "./style";
 import RepoItem from "../RepoItem";
 
-function RepoSave({ savedRepos, setSavedRepos }) {
+function RepoSave() {
   const navigate = useNavigate();
+  const { savedRepos, setSavedRepos } = useContext(SavedReposContext);
+
   const handleDeleteRepo = name => {
     const newRepo = savedRepos.filter(item => item !== name);
     setSavedRepos(newRepo);
