@@ -18,20 +18,14 @@ function RepoSearch() {
   const [endView, setEndView] = useState(10);
   const [modalState, setModalState] = useState(false);
   const [modalContent, setModalContent] = useState("");
-  const searchWordInputRef = useRef("");
 
-  useEffect(() => {
-    searchWordInputRef.current.focus();
-  }, []);
-
-  const getRepositoryData = async () => {
-    console.log(loadingState);
+  const getRepositoryData = async inputValue => {
     try {
       const res = await axios.get(
         "https://api.github.com/search/repositories",
         {
           params: {
-            q: searchWordInputRef.current.value,
+            q: inputValue,
           },
         },
       );
@@ -40,27 +34,6 @@ function RepoSearch() {
     } catch (err) {
       console.error(Error);
     }
-  };
-
-  const enterKeyControl = event => {
-    if (searchWordInputRef.current.value) {
-      if (event.key === "Enter") {
-        handleSearchClick();
-      }
-    }
-  };
-
-  const handleSearchClick = () => {
-    if (searchWordInputRef.current.value === "") {
-      return 0;
-    }
-
-    if (endView !== 10) {
-      setEndView(10);
-    }
-    setLoadingState(1);
-
-    getRepositoryData();
   };
 
   const handleSaveRepo = repoName => {
@@ -84,9 +57,10 @@ function RepoSearch() {
       )}
       <S.RepoSearchContainer>
         <RepoSearchBar
-          searchWordInputRef={searchWordInputRef}
-          enterKeyControl={enterKeyControl}
-          handleSearchClick={handleSearchClick}
+          getRepositoryData={getRepositoryData}
+          endView={endView}
+          setEndView={setEndView}
+          setLoadingState={setLoadingState}
         />
         <RepoSearchResult
           repositoryList={repositoryList}
