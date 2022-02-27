@@ -11,8 +11,6 @@ function RepoSearchBar({
 }) {
   const searchWordInputRef = useRef("");
 
-  console.log("search bar");
-
   useEffect(() => {
     searchWordInputRef.current.focus();
   }, []);

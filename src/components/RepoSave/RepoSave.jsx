@@ -1,16 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { SavedReposContext } from "../../pages/Home/Home";
 
 import * as S from "./style";
 import RepoItem from "../RepoItem";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 function RepoSave() {
-  const [savedRepos, setSavedRepos] = useLocalStorage(
-    "repo",
-    localStorage.getItem("repo"),
-  );
   const navigate = useNavigate();
+  const { savedRepos, setSavedRepos } = useContext(SavedReposContext);
 
   const handleDeleteRepo = name => {
     const newRepo = savedRepos.filter(item => item !== name);
