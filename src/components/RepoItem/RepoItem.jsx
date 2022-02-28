@@ -23,7 +23,7 @@ function RepoItem({ value, index, isSaved, handleRepo }) {
           handleRepo(value);
         }}
       >
-        {isSaved ? "삭제" : "추가"}
+        {isSaved ? "Delete" : "Add"}
       </S.RepoItemButton>
     </S.RepoSearchItem>
   );
