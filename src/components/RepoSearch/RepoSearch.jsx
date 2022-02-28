@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 import * as S from "./style";
@@ -13,25 +13,22 @@ function RepoSearch() {
   const [modalState, setModalState] = useState(false);
   const [modalContent, setModalContent] = useState("");
 
-  const getRepositoryData = useCallback(
-    async inputValue => {
-      try {
-        const res = await axios.get(
-          "https://api.github.com/search/repositories",
-          {
-            params: {
-              q: inputValue,
-            },
+  const getRepositoryData = async inputValue => {
+    try {
+      const res = await axios.get(
+        "https://api.github.com/search/repositories",
+        {
+          params: {
+            q: inputValue,
           },
-        );
-        setRepositoryList(res.data.items);
-        setLoadingState(0);
-      } catch (err) {
-        console.error(Error);
-      }
-    },
-    [loadingState],
-  );
+        },
+      );
+      setRepositoryList(res.data.items);
+      setLoadingState(0);
+    } catch (err) {
+      console.error(Error);
+    }
+  };
 
   return (
     <>
@@ -50,6 +47,7 @@ function RepoSearch() {
           loadingState={loadingState}
           setModalContent={setModalContent}
           setModalState={setModalState}
+          getRepositoryData={getRepositoryData}
         />
       </S.RepoSearchContainer>
     </>
