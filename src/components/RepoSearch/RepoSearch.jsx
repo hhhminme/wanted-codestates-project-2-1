@@ -47,7 +47,6 @@ function RepoSearch() {
           loadingState={loadingState}
           setModalContent={setModalContent}
           setModalState={setModalState}
-          getRepositoryData={getRepositoryData}
         />
       </S.RepoSearchContainer>
     </>
