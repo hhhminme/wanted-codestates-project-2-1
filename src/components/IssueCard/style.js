@@ -11,7 +11,12 @@ export const Card = styled.a`
   padding: 20px;
   border-radius: 10px;
   position: relative;
+  transition: all 300ms ease-in;
   cursor: pointer;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
 export const Title = styled.h1`
