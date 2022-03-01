@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 
 import * as S from "./style";
 import RepoSearchBar from "../RepoSearchBar";
@@ -13,23 +12,6 @@ function RepoSearch() {
   const [modalState, setModalState] = useState(false);
   const [modalContent, setModalContent] = useState("");
 
-  const getRepositoryData = async inputValue => {
-    try {
-      const res = await axios.get(
-        "https://api.github.com/search/repositories",
-        {
-          params: {
-            q: inputValue,
-          },
-        },
-      );
-      setRepositoryList(res.data.items);
-      setLoadingState(0);
-    } catch (err) {
-      console.error(Error);
-    }
-  };
-
   return (
     <>
       {modalState && (
@@ -37,10 +19,10 @@ function RepoSearch() {
       )}
       <S.RepoSearchContainer>
         <RepoSearchBar
-          getRepositoryData={getRepositoryData}
           endView={endView}
           setEndView={setEndView}
           setLoadingState={setLoadingState}
+          setRepositoryList={setRepositoryList}
         />
         <RepoSearchResult
           repositoryList={repositoryList}
