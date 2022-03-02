@@ -15,7 +15,7 @@ function RepoSearchResult({
   const [endView, setEndView] = useState(10);
   const { savedRepos, setSavedRepos } = useContext(SavedReposContext);
 
-  const handleSaveRepo = repoName => {
+  const handleSaveRepo = (repoName, issueCount) => {
     const isValid = verifySaveRepo(savedRepos, repoName);
     if (isValid === "overflow") {
       setModalContent("4개 이상 저장하실 수 없습니다. 😅");
@@ -25,7 +25,7 @@ function RepoSearchResult({
       setModalContent("이미 저장되었습니다. 😅");
       setModalState(true);
     } else {
-      setSavedRepos([...savedRepos, repoName]);
+      setSavedRepos([...savedRepos, { repoName, issueCount }]);
     }
   };
 
@@ -54,7 +54,8 @@ function RepoSearchResult({
           {repositoryList.slice(0, endView).map((value, index) => (
             <RepoItem
               key={index}
-              value={value.full_name}
+              name={value.full_name}
+              issueCount={value.open_issues}
               index={index}
               isSaved={false}
               handleRepo={handleSaveRepo}
