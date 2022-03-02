@@ -8,26 +8,25 @@ import IssueCard from "../../components/IssueCard";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 function Issues() {
-  const { repoInfo } = useParams();
-  const [owner, repo] = repoInfo.split("-");
+  const { userInfo, repoInfo } = useParams();
   const [savedRepos, setSavedRepos] = useLocalStorage(
     "repo",
     localStorage.getItem("repo"),
   );
 
-  const [issuesCount, setIssuesCount] = useState(0);
-  const [issues, setIssues] = useState(null);
+  const [paginationCount, setpaginationCount] = useState(0);
+  const [issues, setIssues] = useState([]);
 
   const getIssuesCount = () => {
     const targetRepo = savedRepos.find(
-      item => item.repoName === `${owner}/${repo}`,
+      item => item.repoName === `${userInfo}/${repoInfo}`,
     );
-    setIssuesCount(Math.ceil(targetRepo.issueCount / 30));
+    setpaginationCount(Math.ceil(targetRepo.issueCount / 30));
   };
 
   const fetchIssues = async currentPage => {
     const res = await axios.get(
-      `https://api.github.com/repos/${owner}/${repo}/issues?page=${currentPage}`,
+      `https://api.github.com/repos/${userInfo}/${repoInfo}/issues?page=${currentPage}`,
     );
     return res.data;
   };
@@ -52,9 +51,11 @@ function Issues() {
     <>
       <S.HomeButton to="/">HOME</S.HomeButton>
       <S.Container>
-        <S.PageTitle>{repoInfo && `${owner}/${repo}`} ISSUES</S.PageTitle>
+        <S.PageTitle>
+          {userInfo && repoInfo && `${userInfo}/${repoInfo}`} ISSUES
+        </S.PageTitle>
         <S.CardContainer>
-          {issues ? (
+          {issues.length > 0 ? (
             issues.map((issue, idx) => (
               <IssueCard key={idx + 1} issue={issue} repoInfo={repoInfo} />
             ))
@@ -63,12 +64,12 @@ function Issues() {
           )}
         </S.CardContainer>
 
-        {issues && (
+        {issues.length > 0 && (
           <ReactPaginate
             previousLabel={"previous"}
             nextLabel={"next"}
             breakLabel={"..."}
-            pageCount={issuesCount}
+            pageCount={paginationCount}
             pageRangeDisplayed={6}
             onPageChange={handlePageClick}
             containerClassName={"pagination justify-content-center"}

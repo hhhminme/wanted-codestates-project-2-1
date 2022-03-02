@@ -10,7 +10,7 @@ function RepoSave() {
   const { savedRepos, setSavedRepos } = useContext(SavedReposContext);
 
   const handleDeleteRepo = name => {
-    const newRepo = savedRepos.filter(item => item !== name);
+    const newRepo = savedRepos.filter(item => item.repoName !== name);
     setSavedRepos(newRepo);
   };
 
@@ -29,7 +29,6 @@ function RepoSave() {
                   isSaved={true}
                   handleRepo={handleDeleteRepo}
                   onClick={() => {
-                    console.log(1);
                     navigate(`/issues/${owner}-${repo}`);
                   }}
                 />
