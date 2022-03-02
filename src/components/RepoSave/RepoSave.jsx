@@ -18,13 +18,13 @@ function RepoSave() {
     <>
       <S.RepoSave>
         <ul>
-          {savedRepos.length ? (
+          {savedRepos?.length ? (
             savedRepos.map((value, index) => {
-              const [owner, repo] = value.split("/");
+              const [owner, repo] = value.repoName.split("/");
               return (
                 <RepoItem
                   key={index}
-                  value={value}
+                  name={value.repoName}
                   index={index}
                   isSaved={true}
                   handleRepo={handleDeleteRepo}

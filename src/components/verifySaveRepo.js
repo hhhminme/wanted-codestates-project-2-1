@@ -1,12 +1,12 @@
 const verifyRepoCount = savedRepos => {
-  if (savedRepos.length >= 4) {
+  if (savedRepos?.length >= 4) {
     return "overflow";
   }
   return true;
 };
 
 const verifyDuplicateRepo = (savedRepos, willAddRepo, modal) => {
-  const existRepo = savedRepos.find(repoName => repoName === willAddRepo);
+  const existRepo = savedRepos.find(repo => repo.repoName === willAddRepo);
   if (existRepo) {
     return "already";
   }

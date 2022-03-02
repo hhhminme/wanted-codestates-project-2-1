@@ -5,12 +5,25 @@ import axios from "axios";
 import * as S from "./style";
 import ReactPaginate from "react-paginate";
 import IssueCard from "../../components/IssueCard";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 function Issues() {
   const { repoInfo } = useParams();
   const [owner, repo] = repoInfo.split("-");
+  const [savedRepos, setSavedRepos] = useLocalStorage(
+    "repo",
+    localStorage.getItem("repo"),
+  );
 
+  const [issuesCount, setIssuesCount] = useState(0);
   const [issues, setIssues] = useState(null);
+
+  const getIssuesCount = () => {
+    const targetRepo = savedRepos.find(
+      item => item.repoName === `${owner}/${repo}`,
+    );
+    setIssuesCount(Math.ceil(targetRepo.issueCount / 30));
+  };
 
   const fetchIssues = async currentPage => {
     const res = await axios.get(
@@ -31,7 +44,7 @@ function Issues() {
       const issuesFromServer = await fetchIssues(1);
       setIssues(issuesFromServer);
     };
-
+    getIssuesCount();
     initFetch();
   }, []);
 
@@ -55,7 +68,7 @@ function Issues() {
             previousLabel={"previous"}
             nextLabel={"next"}
             breakLabel={"..."}
-            pageCount={10}
+            pageCount={issuesCount}
             pageRangeDisplayed={6}
             onPageChange={handlePageClick}
             containerClassName={"pagination justify-content-center"}
