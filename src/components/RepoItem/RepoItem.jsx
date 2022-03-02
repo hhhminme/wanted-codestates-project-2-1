@@ -10,7 +10,7 @@ function RepoItem({ name, issueCount, index, isSaved, handleRepo }) {
       <S.RepoSearchItemList>
         <S.GithubIcon />
         {isSaved ? (
-          <S.RepoSearchLink to={`/issues/${owner}-${repo}`}>
+          <S.RepoSearchLink to={`/issues/${owner}/${repo}`}>
             {name}
           </S.RepoSearchLink>
         ) : (
