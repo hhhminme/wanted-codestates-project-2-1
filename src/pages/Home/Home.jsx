@@ -8,10 +8,7 @@ import { useLocalStorage } from "../../hooks/useLocalStorage";
 export const SavedReposContext = createContext(null);
 
 function Home() {
-  const [savedRepos, setSavedRepos] = useLocalStorage(
-    "repo",
-    localStorage.getItem("repo"),
-  );
+  const [savedRepos, setSavedRepos] = useLocalStorage("repo", []);
 
   return (
     <S.HomeWrap>
