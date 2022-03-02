@@ -22,7 +22,7 @@ function Issues() {
     const targetRepo = savedRepos.find(
       item => item.repoName === `${owner}/${repo}`,
     );
-    setIssuesCount(Math.ceil(targetRepo.issueCount / 30));
+    setIssuesCount(Math.floor(targetRepo.issueCount / 30));
   };
 
   const fetchIssues = async currentPage => {
